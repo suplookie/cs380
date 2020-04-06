@@ -385,36 +385,27 @@ void onMouseDrag( int x, int y ) {
 		glPushMatrix();
 		glLoadIdentity();
 		glMultMatrixd(cow2wld.matrix());
-		if (x > dist[0])
-			glTranslated( 1 , 0, 0 );
-		else 
-			glTranslated(-1 , 0, 0);
+		glTranslatef((x - oldX - dist[0]) / 12, 0, 0);
 		glGetDoublev(GL_MODELVIEW_MATRIX, cow2wld.matrix());
-		dist[0] = double(x);
+		dist[0] = double(x - oldX);
 		glPopMatrix();
 	}
 	else if (togDirection == 'y') {
 		glPushMatrix();
 		glLoadIdentity();
 		glMultMatrixd(cow2wld.matrix());
-		if (x > dist[1])
-			glTranslated(0, 1, 0);
-		else
-			glTranslated(0, -1, 0);
+		glTranslatef(0, (x - oldX - dist[1]) / 12, 0);
 		glGetDoublev(GL_MODELVIEW_MATRIX, cow2wld.matrix());
-		dist[1] = double(x);
+		dist[1] = double(x - oldX);
 		glPopMatrix();
 	}
 	else if (togDirection == 'z') {
 		glPushMatrix();
 		glLoadIdentity();
 		glMultMatrixd(cow2wld.matrix());
-		if (x > dist[2])
-			glTranslated(0, 0, 1);
-		else
-			glTranslated(0, 0, -1);
+		glTranslatef(0, 0, (x - oldX - dist[2]) / 12);
 		glGetDoublev(GL_MODELVIEW_MATRIX, cow2wld.matrix());
-		dist[2] = double(x);
+		dist[2] = double(x - oldX);
 		glPopMatrix();
 	}
 
