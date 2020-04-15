@@ -381,33 +381,29 @@ void onMouseDrag( int x, int y ) {
 
     // (Project 2) TODO : Implement here to perform properly when drag the mouse on each case, respectively.
     /*********************************************************************************/
+	int ind;
 	if (togDirection == 'x') {
-		glPushMatrix();
-		glLoadIdentity();
-		glMultMatrixd(cow2wld.matrix());
-		glTranslatef((x - oldX - dist[0]) / 12, 0, 0);
-		glGetDoublev(GL_MODELVIEW_MATRIX, cow2wld.matrix());
-		dist[0] = double(x - oldX);
-		glPopMatrix();
+		ind = 0;
 	}
 	else if (togDirection == 'y') {
-		glPushMatrix();
-		glLoadIdentity();
-		glMultMatrixd(cow2wld.matrix());
-		glTranslatef(0, (x - oldX - dist[1]) / 12, 0);
-		glGetDoublev(GL_MODELVIEW_MATRIX, cow2wld.matrix());
-		dist[1] = double(x - oldX);
-		glPopMatrix();
+		ind = 1;
 	}
 	else if (togDirection == 'z') {
-		glPushMatrix();
-		glLoadIdentity();
-		glMultMatrixd(cow2wld.matrix());
-		glTranslatef(0, 0, (x - oldX - dist[2]) / 12);
-		glGetDoublev(GL_MODELVIEW_MATRIX, cow2wld.matrix());
-		dist[2] = double(x - oldX);
-		glPopMatrix();
+		ind = 2;
 	}
+	glPushMatrix();
+	glLoadIdentity();
+	glMultMatrixd(cow2wld.matrix());
+	if (oldX != amount[ind]) {
+		dist[ind] = 0;
+	}
+	float trans[3] = { 0, 0, 0 };
+	trans[ind] = (x - oldX - dist[ind]) / 12;
+	glTranslatef(trans[0], trans[1], trans[2]);
+	glGetDoublev(GL_MODELVIEW_MATRIX, cow2wld.matrix());
+	dist[ind] = double(x - oldX);
+	amount[ind] = double(oldX);
+	glPopMatrix();
 
 
 
@@ -458,7 +454,7 @@ void onKeyPress( unsigned char key, int x, int y ) {
 			printf("rotate on\n");
 			rotx = rand();
 			roty = rand();
-			rotx = rand();
+			rotz = rand();
 			togDirection = 'r';
 			glutIdleFunc(spinCow);
 			rotateOn = true;
@@ -482,7 +478,7 @@ void spinCow(void) {
 	glPushMatrix();
 	glLoadIdentity();
 	glMultMatrixd(cow2wld.matrix());
-	glRotated(0.3, rotx, roty, rotz);
+	glRotated(1, rotx, roty, rotz);
 	glGetDoublev(GL_MODELVIEW_MATRIX, cow2wld.matrix());
 	glPopMatrix();
 	glutPostRedisplay();
