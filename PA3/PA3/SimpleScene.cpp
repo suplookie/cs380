@@ -485,10 +485,20 @@ void onKeyPress( unsigned char key, int x, int y ) {
 	}
 	if (key == 'r') {
 		if (!rotateOn) {
+			if (rotx == 0 && roty == 0 && rotz == 0) {
+				double rotate[16];
+				glPushMatrix();
+				glLoadIdentity();
+				glMultMatrixd(cow2wld.inverse().matrix());
+				glMultMatrixd(cam2wld[cameraIndex].matrix());
+				glGetDoublev(GL_MODELVIEW_MATRIX, rotate);
+				glPopMatrix();
+				rotx = rotate[0];
+				roty = rotate[1];
+				rotz = rotate[2];
+			}
 			if (transMode == 'v') {
-				rotx = wld2cam[cameraIndex].matrix()[0];
-				roty = wld2cam[cameraIndex].matrix()[1];
-				rotz = wld2cam[cameraIndex].matrix()[2];
+				printf("%f %f %f\n", rotx, roty, rotz);
 				glutIdleFunc(spinCow);
 			}
 			rotateOn = true;
